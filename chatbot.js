@@ -8,4 +8,5 @@ client.connect()
 
 client.on('message', (channel, tags, message, self) => {
     console.log(`${tags['display-name']}: ${message}`)
+    console.log(tags)
 })
