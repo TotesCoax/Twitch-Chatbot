@@ -4,7 +4,7 @@ const client = new tmi.Client({
     channels: ['totescoax']
 })
 
-client.connect()
+client.connect().catch(console.error)
 
 client.on('message', (channel, tags, message, self) => {
     console.log(`${tags['display-name']}: ${message}`)
