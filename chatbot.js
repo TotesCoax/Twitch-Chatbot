@@ -1,4 +1,7 @@
+require('dotenv').config()
 const tmi = require('tmi.js')
+
+console.log(process.env.LOAD_SUCCESS)
 
 const client = new tmi.Client({
     channels: ['totescoax']
