@@ -23,19 +23,19 @@ async function main(){
         tokenData
         )
     //Need to update the token permissions for this to officially work.
-    // const pubSubClient = new PubSubClient()
-    // const userId = await pubSubClient.registerUserListener(authProvider)
-    // console.log(userId)
-    // const RedemptionListener = await pubSubClient.onRedemption(userId, (message) => {
-    //     console.log(message.rewardTitle);
-    // })
+    const pubSubClient = new PubSubClient()
+    const userId = await pubSubClient.registerUserListener(authProvider)
+    console.log(userId)
+    pubSubClient.onRedemption(userId, (message) => {
+        console.log(message.rewardTitle);
+    })
     const CHAT = new ChatClient({ authProvider, channels: [MY_CHANNEL] })
     await CHAT.connect().catch(console.error())
+        .then(console.log('Bot connected!'))
 
     CHAT.onMessage((channel, user, message, msg) => {
         console.log(`${user}: ${message}`)
         //console.log(msg.userInfo.color)
-        CHAT.say(channel, 'Test message')
     })
 
 }
