@@ -3,29 +3,39 @@ const { promises: fs } = require('fs')
 const { RefreshingAuthProvider } = require('@twurple/auth')
 const { ChatClient } = require('@twurple/chat')
 
+const { PubSubClient } = require('@twurple/pubsub')
+const { PubSubRedemptionMessage } = require('@twurple/pubsub')
 
 console.log(process.env.LOAD_SUCCESS)
 
 async function main(){
-    const tokenData = JSON.parse(await fs.readFile('./token.json'))
     const clientId = process.env.BOT_CLIENT_ID
     const accessToken = process.env.BOT_PASSWORD
-    const BOT_SECRET = process.env.BOT_SECRET
+    const tokenData = JSON.parse(await fs.readFile('./token.json'))
+    const clientSecret = process.env.BOT_SECRET
     const MY_CHANNEL = 'totescoax'
     const authProvider = new RefreshingAuthProvider(
         {
             clientId,
-            BOT_SECRET,
+            clientSecret,
             onRefresh: async newTokenData => await fs.writeFile('./token.json', JSON.stringify(newTokenData, null, 4), 'utf-8')
         },
         tokenData
-    )
+        )
+    //Need to update the token permissions for this to officially work.
+    // const pubSubClient = new PubSubClient()
+    // const userId = await pubSubClient.registerUserListener(authProvider)
+    // console.log(userId)
+    // const RedemptionListener = await pubSubClient.onRedemption(userId, (message) => {
+    //     console.log(message.rewardTitle);
+    // })
     const CHAT = new ChatClient({ authProvider, channels: [MY_CHANNEL] })
     await CHAT.connect().catch(console.error())
 
     CHAT.onMessage((channel, user, message, msg) => {
         console.log(`${user}: ${message}`)
         //console.log(msg.userInfo.color)
+        CHAT.say(channel, 'Test message')
     })
 
 }
