@@ -1,6 +1,7 @@
 #Personal things to ignore
 .env
 token.json
+usertoken.json
 
 # Logs
 logs

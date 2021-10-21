@@ -1,10 +1,9 @@
 require('dotenv').config()
 const { promises: fs } = require('fs')
-const { RefreshingAuthProvider } = require('@twurple/auth')
+const { RefreshingAuthProvider, exchangeCode } = require('@twurple/auth')
 const { ChatClient } = require('@twurple/chat')
 
-const { PubSubClient } = require('@twurple/pubsub')
-const { PubSubRedemptionMessage } = require('@twurple/pubsub')
+const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 
 console.log(process.env.LOAD_SUCCESS)
 
@@ -21,10 +20,25 @@ async function main(){
         },
         tokenData
         )
+    console.log('Bot auth generated')
+    const clientToken = JSON.parse(await fs.readFile('./usertoken.json'))
+    const clientAuthProvider = new RefreshingAuthProvider(
+        {
+            clientId,
+            clientSecret,
+            onRefresh: async newTokenData => await fs.writeFile('./usertoken.json', JSON.stringify(newTokenData, null, 4), 'utf-8')
+        },
+        clientToken
+        )
+    console.log('Client auth generated')
+
+    //API Connection
+
     //PubSub connection for channel points redemptions
     const pubSubClient = new PubSubClient()
-    const userId = await pubSubClient.registerUserListener(authProvider)
+    const userId = await pubSubClient.registerUserListener(clientAuthProvider)
         .then(console.log('Connected to PubSub'))
+    console.log(userId)
     pubSubClient.onRedemption(userId, (message) => {
         console.log(message.rewardTitle);
     })
