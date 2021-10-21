@@ -38,7 +38,6 @@ async function main(){
     const pubSubClient = new PubSubClient()
     const userId = await pubSubClient.registerUserListener(clientAuthProvider)
         .then(console.log('Connected to PubSub'))
-    console.log(userId)
     pubSubClient.onRedemption(userId, (message) => {
         console.log(message.rewardTitle);
     })
