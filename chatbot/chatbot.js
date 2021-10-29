@@ -53,12 +53,6 @@ async function main(){
             CHAT.say(channel, 'The bot acknowledges your test.')
         }
     })
-
 }
 main()
-
-module.exports = {
-    main
-}
-
 
