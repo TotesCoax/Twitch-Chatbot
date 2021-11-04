@@ -1,6 +1,6 @@
 require('dotenv').config()
 const { promises: fs } = require('fs')
-const { RefreshingAuthProvider, exchangeCode } = require('@twurple/auth')
+const { RefreshingAuthProvider, exchangeCode, getTokenInfo } = require('@twurple/auth')
 
 const { ApiClient } = require ('@twurple/api')
 
@@ -16,6 +16,12 @@ async function main(){
     const clientSecret = process.env.BOT_SECRET
     const MY_CHANNEL = 'totescoax'
     const MY_CHANNEL_USERID = '132562074'
+
+    //bit that turns client code into access token
+    // const CODE = process.env.CLIENT_CODE
+    // let newToken = await exchangeCode(clientId, clientSecret, CODE, 'http://localhost')
+    // console.log(newToken)
+
     const authProvider = new RefreshingAuthProvider(
         {
             clientId,
@@ -36,11 +42,16 @@ async function main(){
         )
     console.log('Client auth generated')
 
-    //API Connection -- NEED TO UPDATE PERMISSIONS TO USE
+    // let bot_token_info = await getTokenInfo(tokenData.accessToken)
+    // console.log(bot_token_info.scopes)
+    // let client_token_info = await getTokenInfo(clientToken.accessToken)
+    // console.log(client_token_info.scopes)
+
+    // //API Connection -- NEED TO UPDATE PERMISSIONS TO USE
     // const API = new ApiClient({authProvider:authProvider})
     // console.log('Connected to API?')
-    // const rewards = await API.channelPoints.getCustomRewards(MY_CHANNEL_USERID,false)
-    // console.log(rewards);
+    // const API_token = await API.getTokenInfo()
+    // console.log(API_token.scopes)
     
     //PubSub connection for channel points redemptions
     const pubSubClient = new PubSubClient()
