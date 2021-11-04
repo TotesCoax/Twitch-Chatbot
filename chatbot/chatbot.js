@@ -2,7 +2,7 @@ require('dotenv').config()
 const { promises: fs } = require('fs')
 const { RefreshingAuthProvider, exchangeCode, getTokenInfo } = require('@twurple/auth')
 
-const { ApiClient } = require ('@twurple/api')
+const { ApiClient, ChattersList } = require ('@twurple/api')
 
 const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 
@@ -22,7 +22,7 @@ async function main(){
     // let newToken = await exchangeCode(clientId, clientSecret, CODE, 'http://localhost')
     // console.log(newToken)
 
-    const authProvider = new RefreshingAuthProvider(
+    const botAuthProvider = new RefreshingAuthProvider(
         {
             clientId,
             clientSecret,
@@ -42,16 +42,20 @@ async function main(){
         )
     console.log('Client auth generated')
 
+    console.log(botAuthProvider.clientId, clientAuthProvider.clientId)
+
     // let bot_token_info = await getTokenInfo(tokenData.accessToken)
     // console.log(bot_token_info.scopes)
     // let client_token_info = await getTokenInfo(clientToken.accessToken)
     // console.log(client_token_info.scopes)
 
-    // //API Connection -- NEED TO UPDATE PERMISSIONS TO USE
-    // const API = new ApiClient({authProvider:authProvider})
-    // console.log('Connected to API?')
-    // const API_token = await API.getTokenInfo()
-    // console.log(API_token.scopes)
+    // //API Connection
+    const API = new ApiClient({authProvider:clientAuthProvider})
+    console.log('Connected to API?')
+    const API_token = await API.getTokenInfo()
+    console.log(API_token.scopes)
+    const rewards = await API.channelPoints.getCustomRewards(MY_CHANNEL_USERID)
+    rewards.forEach(reward => console.log(reward.title, reward.id))
     
     //PubSub connection for channel points redemptions
     const pubSubClient = new PubSubClient()
@@ -62,7 +66,7 @@ async function main(){
     })
 
     //Connection to chat
-    const CHAT = new ChatClient({ authProvider, channels: [MY_CHANNEL] })
+    const CHAT = new ChatClient({ botAuthProvider, channels: [MY_CHANNEL] })
     await CHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
 
