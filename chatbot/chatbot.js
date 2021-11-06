@@ -73,13 +73,23 @@ async function main(){
         if (message === "test"){
             CHAT.say(channel, 'The bot acknowledges your test.')
         }
-        if (message === "polltest"){
-            let newPoll = API.polls.createPoll(MY_CHANNEL_USERID, {title:"Did this work?", choices:["yes","no"], duration: 15})
-            .then(console.log('Poll created'))
-            .then(newPoll => {console.log(newPoll.choices)})
+        if (message.charAt(0) === "!" && msg.userInfo.isBroadcaster){
+            console.log("Command:", message.charAt(0) === "!" && msg.userInfo.isBroadcaster)
+            CHAT.say(channel, "A command was issued.")
+        }
+        if (message === "!polltest" && msg.userInfo.isBroadcaster){
+            API.polls.createPoll(MY_CHANNEL_USERID, {title:"Did this work?", choices:["yes","no"], duration: 30})
             .catch(console.error())
+            .then(console.log('Poll created'))
+            // .then(newPoll => {console.log(newPoll.id)})
+            .then(newPoll => {setTimeout(pollResults, 31000, API, newPoll.id)})
         }
     })
+    async function pollResults(api, pollId){
+        console.log('Getting poll data!')
+        let targetPoll = await api.polls.getPollById(MY_CHANNEL_USERID, pollId)
+
+        targetPoll.choices.forEach(choice => console.log(`${choice.title}: ${choice.totalVotes}`))
+    }
 }
 main()
-

@@ -11,12 +11,21 @@ Actions:
     Read Finished Poll
     Say things in chat
     React to redemption
-    Register active players talking in chat
     Move to next chapter
-    Add players to module from redemptions
-    Clear out redeemed people from the queue.
     Toggle the entry redemption
+    Take requests from chat?
 Pseudocode:
+    Someone summons an adventure - Redeem? Chat command?
+    The app creates a new adventure
+        Pulls data from saved adventure file
+        Builds choice tree
+    Game loop
+        Exposition/Intro - App relaying information via chat or overlay
+        Start the first choice
+        Wait for the results
+        Announce winning choice
+        Process results and move onto next section
+        Repeat loop until end
 
 */
 class ChooseYourOwnAdventure {
@@ -29,8 +38,9 @@ class ChooseYourOwnAdventure {
         this.PollAPI = apiConnection,
         this.Chat = chatConnection,
         this.PubSub = pubsubConnection,
-        this.players = []
-
+        this.ChoiceTree = {}
+    }
+    createAdventure(){
 
     }
 }
