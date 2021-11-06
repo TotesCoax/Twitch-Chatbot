@@ -7,6 +7,7 @@ const { ApiClient } = require ('@twurple/api')
 const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 
 const { ChatClient } = require('@twurple/chat')
+const { log, time } = require('console')
 
 console.log(process.env.LOAD_SUCCESS)
 
@@ -64,9 +65,12 @@ async function main(){
     })
 
     //Connection to chat
-    const CHAT = new ChatClient({ botAuthProvider, channels: [MY_CHANNEL] })
+    const CHAT = new ChatClient({ authProvider:botAuthProvider, channels: [MY_CHANNEL], /*logger:{minLevel: 'debug'}*/ })
     await CHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
+
+    CHAT.onRegister(event => CHAT.say(MY_CHANNEL,"It's go time, bitches."))
+
 
     CHAT.onMessage((channel, user, message, msg) => {
         console.log(`${user}: ${message}`)
