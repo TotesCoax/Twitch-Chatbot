@@ -1,3 +1,4 @@
+//Actually Important Imports
 require('dotenv').config()
 const { promises: fs } = require('fs')
 const { RefreshingAuthProvider, exchangeCode, getTokenInfo } = require('@twurple/auth')
@@ -8,6 +9,10 @@ const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 
 const { ChatClient } = require('@twurple/chat')
 const { log, time } = require('console')
+
+//My shitty meme imports... so the truly important imports
+const { Startup } = require('./activationQuotes')
+const { Utility } = require('./utilities')
 
 console.log(process.env.LOAD_SUCCESS)
 
@@ -51,11 +56,13 @@ async function main(){
     // //API Connection
     const API = new ApiClient({authProvider:clientAuthProvider})
     console.log('Connected to API?')
-    const API_token = await API.getTokenInfo()
+    // const API_token = await API.getTokenInfo()
     // console.log(API_token.scopes)
-    const rewards = await API.channelPoints.getCustomRewards(MY_CHANNEL_USERID)
+    // const rewards = await API.channelPoints.getCustomRewards(MY_CHANNEL_USERID)
     // rewards.forEach(reward => console.log(reward.title, reward.id))
-    
+    // const polls = await API.polls.getPolls(MY_CHANNEL_USERID)
+    // polls.data.forEach(poll => console.log(poll.title))
+
     //PubSub connection for channel points redemptions
     const pubSubClient = new PubSubClient()
     const userId = await pubSubClient.registerUserListener(clientAuthProvider)
@@ -69,7 +76,7 @@ async function main(){
     await CHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
 
-    CHAT.onRegister(event => CHAT.say(MY_CHANNEL,"It's go time, bitches."))
+    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, Startup.pullRandom()))
 
 
     CHAT.onMessage((channel, user, message, msg) => {
@@ -79,21 +86,23 @@ async function main(){
         }
         if (message.charAt(0) === "!" && msg.userInfo.isBroadcaster){
             console.log("Command:", message.charAt(0) === "!" && msg.userInfo.isBroadcaster)
-            CHAT.say(channel, "A command was issued.")
+            CHAT.say(channel, "It will be done, my liege.")
         }
         if (message === "!polltest" && msg.userInfo.isBroadcaster){
-            API.polls.createPoll(MY_CHANNEL_USERID, {title:"Did this work?", choices:["yes","no"], duration: 30})
+            API.polls.createPoll(MY_CHANNEL_USERID, {title:"Did this work?", choices:["yes","no"], duration: 15})
             .catch(console.error())
             .then(console.log('Poll created'))
             // .then(newPoll => {console.log(newPoll.id)})
-            .then(newPoll => {setTimeout(pollResults, 31000, API, newPoll.id)})
+            .then(newPoll => setTimeout(pollResults, Utility.TOms({s:16}), API, newPoll.id))
         }
     })
     async function pollResults(api, pollId){
         console.log('Getting poll data!')
+        // console.log(api, pollId)
         let targetPoll = await api.polls.getPollById(MY_CHANNEL_USERID, pollId)
 
         targetPoll.choices.forEach(choice => console.log(`${choice.title}: ${choice.totalVotes}`))
     }
 }
 main()
+
