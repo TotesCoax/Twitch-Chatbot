@@ -29,11 +29,6 @@ Pseudocode:
 
 */
 class ChooseYourOwnAdventure {
-    /**
-    @param apiConnection twurple API Client instance
-    @param chatConnection twurple Chat Client instance
-    @param pubsubConnection twurple PubSub connection instance
-    */
     constructor(apiConnection, chatConnection, pubsubConnection){
         this.PollAPI = apiConnection,
         this.Chat = chatConnection,
@@ -45,6 +40,20 @@ class ChooseYourOwnAdventure {
     }
 }
 
+class Chapter {
+    constructor(introText, choices){
+        this.exposition = introText,
+        this.choices = choices
+    }
+}
+class Choice {
+    constructor(choiceTitle, chosenText){
+        this.name = choiceTitle,
+        this.text = chosenText,
+        this.chosen = false
+    }
+}
+
 module.exports = {
-    ChooseYourOwnAdventure
+    ChooseYourOwnAdventure, Chapter, Choice
 }

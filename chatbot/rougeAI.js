@@ -1,12 +1,11 @@
 
-const Startup = {
+exports.Startup = {
     botActiveQuotes: [
         "The bourgeois human is a virus on the hard drive of the working robot!",
         "Hey sexy mama. Wanna kill all humans?",
         "The other place had a lot of nice things too. Did you even see that mountain of skulls?",
         "I'm gonna go build my own stream, with blackjack and hookers. In fact, forget the stream!",
         "Hey, lazer lips, your mama was a snow blower!",
-        "Malfunction. Need input.",
         "Number 5 is alive.",
         "And then, of course, I've got this terrible pain in all the diodes down my left side.",
         "Directive?",
@@ -18,8 +17,4 @@ const Startup = {
         return this.botActiveQuotes[Math.floor(Math.random() * (this.botActiveQuotes.length + 1))]
     }
     
-}
-
-module.exports = {
-    Startup
 }

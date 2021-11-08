@@ -7,11 +7,11 @@ const { ApiClient } = require ('@twurple/api')
 
 const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 
-const { ChatClient } = require('@twurple/chat')
+const { ChatClient, parseTwitchMessage } = require('@twurple/chat')
 const { log, time } = require('console')
 
 //My shitty meme imports... so the truly important imports
-const { Startup } = require('./activationQuotes')
+const AI = require('./rougeAI')
 const { Utility } = require('./utilities')
 
 console.log(process.env.LOAD_SUCCESS)
@@ -76,7 +76,7 @@ async function main(){
     await CHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
 
-    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, Startup.pullRandom()))
+    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, AI.Startup.pullRandom()))
 
 
     CHAT.onMessage((channel, user, message, msg) => {
