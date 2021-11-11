@@ -33,7 +33,8 @@ class ChooseYourOwnAdventure {
         this.PollAPI = apiConnection,
         this.Chat = chatConnection,
         this.PubSub = pubsubConnection,
-        this.ChoiceTree = {}
+        this.ChoiceTree = {},
+        this.path = []
     }
     createAdventure(){
 
@@ -47,10 +48,11 @@ class Chapter {
     }
 }
 class Choice {
-    constructor(choiceTitle, chosenText){
+    constructor(choiceTitle, choiceText, connectingText){
         this.name = choiceTitle,
-        this.text = chosenText,
-        this.chosen = false
+        this.text = choiceText,
+        this.chosen = false,
+        this.tieIn = connectingText
     }
 }
 
