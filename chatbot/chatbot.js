@@ -1,14 +1,13 @@
 //Actually Important Imports
 require('dotenv').config()
 const { promises: fs } = require('fs')
-const { RefreshingAuthProvider, exchangeCode, getTokenInfo } = require('@twurple/auth')
+const { RefreshingAuthProvider } = require('@twurple/auth')
 
 const { ApiClient } = require ('@twurple/api')
 
 const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 
-const { ChatClient, parseTwitchMessage } = require('@twurple/chat')
-const { log, time } = require('console')
+const { ChatClient } = require('@twurple/chat')
 
 //My shitty meme imports... so the truly important imports
 const AI = require('./rougeAI')
