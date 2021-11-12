@@ -12,6 +12,7 @@ const { ChatClient } = require('@twurple/chat')
 //My shitty meme imports... so the truly important imports
 const AI = require('./rougeAI')
 const { Utility } = require('./utilities')
+const { Chatbox, ChatboxMessage } = require('./chatBox')
 
 console.log(process.env.LOAD_SUCCESS)
 
@@ -77,9 +78,11 @@ async function main(){
 
     CHAT.onRegister(event => CHAT.say(MY_CHANNEL, AI.Startup.pullRandom()))
 
+    let DisplayChat = new Chatbox()
 
     CHAT.onMessage((channel, user, message, msg) => {
         console.log(`${user}: ${message}`)
+        DisplayChat.add(user, message, msg)
         if (message === "test"){
             CHAT.say(channel, 'The bot acknowledges your test.')
         }
