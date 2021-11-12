@@ -10,9 +10,9 @@ const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 const { ChatClient } = require('@twurple/chat')
 
 //My shitty meme imports... so the truly important imports
-const AI = require('./rougeAI')
+const AI = require('./modules/rougeAI')
 const { Utility } = require('./utilities')
-const { Chatbox, ChatboxMessage } = require('./chatBox')
+const { Chatbox, ChatboxMessage } = require('./modules/chatBox')
 
 console.log(process.env.LOAD_SUCCESS)
 
