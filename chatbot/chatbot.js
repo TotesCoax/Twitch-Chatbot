@@ -13,6 +13,7 @@ const { ChatClient } = require('@twurple/chat')
 const AI = require('./modules/rougeAI')
 const { Utility } = require('./utilities')
 const { Chatbox, ChatboxMessage } = require('./modules/chatBox')
+const { Pollbox, PollboxChoice, fetchActive } = require('./modules/pollingBox')
 
 console.log(process.env.LOAD_SUCCESS)
 
@@ -60,9 +61,11 @@ async function main(){
     // console.log(API_token.scopes)
     // const rewards = await API.channelPoints.getCustomRewards(MY_CHANNEL_USERID)
     // rewards.forEach(reward => console.log(reward.title, reward.id))
-    // const polls = await API.polls.getPolls(MY_CHANNEL_USERID)
-    // polls.data.forEach(poll => console.log(poll.title))
-
+    let pollHolder = []
+    const polls = await API.polls.getPolls(MY_CHANNEL_USERID)
+    polls.data.forEach(poll => pollHolder.push(new Pollbox(poll)))
+    console.table(pollHolder)
+    
     //PubSub connection for channel points redemptions
     const pubSubClient = new PubSubClient()
     const userId = await pubSubClient.registerUserListener(clientAuthProvider)
