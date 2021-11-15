@@ -19,16 +19,16 @@ console.log(process.env.LOAD_SUCCESS)
 
 async function main(){
     const clientId = process.env.BOT_CLIENT_ID
-    const tokenData = JSON.parse(await fs.readFile('./token.json'))
     const clientSecret = process.env.BOT_SECRET
     const MY_CHANNEL = 'totescoax'
     const MY_CHANNEL_USERID = '132562074'
-
+    
     //bit that turns client code into access token
     // const CODE = process.env.CLIENT_CODE
     // let newToken = await exchangeCode(clientId, clientSecret, CODE, 'http://localhost')
     // console.log(newToken)
-
+    
+    const tokenData = JSON.parse(await fs.readFile('./token.json'))
     const botAuthProvider = new RefreshingAuthProvider(
         {
             clientId,
@@ -81,8 +81,12 @@ async function main(){
 
     CHAT.onRegister(event => CHAT.say(MY_CHANNEL, AI.Startup.pullRandom()))
 
-    let DisplayChat = new Chatbox()
+    //API Related
 
+    //Pubsub Related
+    
+    //Chat Related
+    let DisplayChat = new Chatbox()
     CHAT.onMessage((channel, user, message, msg) => {
         console.log(`${user}: ${message}`)
         DisplayChat.add(user, message, msg)
