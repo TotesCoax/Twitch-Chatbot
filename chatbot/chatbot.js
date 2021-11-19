@@ -13,7 +13,7 @@ const { ChatClient } = require('@twurple/chat')
 const AI = require('./modules/rougeAI')
 const { Utility } = require('./utilities')
 const { Chatbox, ChatboxMessage } = require('./modules/chatBox')
-const { Pollbox, PollboxChoice, fetchActive } = require('./modules/pollingBox')
+const { Pollbox, PollboxChoice } = require('./modules/pollingBox')
 
 console.log(process.env.LOAD_SUCCESS)
 
