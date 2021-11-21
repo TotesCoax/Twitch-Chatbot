@@ -1,0 +1,30 @@
+{
+  "name": "coaxbot",
+  "version": "A.0.0",
+  "description": "a twitch app to test interactivity levels in stream environment",
+  "main": "chatbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TotesCoax/Twitch-Chatbot.git"
+  },
+  "keywords": [
+    "twitch",
+    "bot",
+    "game",
+    "api",
+    "chat",
+    "redeem",
+    "point",
+    "interactive"
+  ],
+  "author": "TotesCoax",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TotesCoax/Twitch-Chatbot/issues"
+  },
+  "homepage": "https://github.com/TotesCoax/Twitch-Chatbot#readme",
+  "type": "module"
+}

@@ -2,6 +2,7 @@
 .env
 token.json
 usertoken.json
+secrets.js
 
 # Logs
 logs

@@ -1,25 +1,25 @@
 //Actually Important Imports
-require('dotenv').config()
-const { promises: fs } = require('fs')
-const { RefreshingAuthProvider } = require('@twurple/auth')
+import { Secret } from './secrets.js'
+import { promises as fs } from '../node_modules/'
+import { RefreshingAuthProvider } from '@twurple/auth'
 
-const { ApiClient } = require ('@twurple/api')
+import { ApiClient } from '@twurple/api'
 
-const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
+import { PubSubClient, PubSubRedemptionMessage } from '@twurple/pubsub'
 
-const { ChatClient } = require('@twurple/chat')
+import { ChatClient } from '@twurple/chat'
 
 //My shitty meme imports... so the truly important imports
-const AI = require('./modules/rougeAI')
-const { Utility } = require('./utilities')
-const { Chatbox, ChatboxMessage } = require('./modules/chatBox')
-const { Pollbox, PollboxChoice } = require('./modules/pollingBox')
+import { Startup } from './modules/rougeAI.js'
+import { Utility } from './utilities.js'
+import { Chatbox, ChatboxMessage } from './modules/chatBox.js'
+import { Pollbox, PollboxChoice } from './modules/pollingBox.js'
 
-console.log(process.env.LOAD_SUCCESS)
+console.log(Secret.loadSuccess)
 
 async function main(){
-    const clientId = process.env.BOT_CLIENT_ID
-    const clientSecret = process.env.BOT_SECRET
+    const clientId = Secret.botClientID
+    const clientSecret = Secret.botSecret
     const MY_CHANNEL = 'totescoax'
     const MY_CHANNEL_USERID = '132562074'
     
@@ -79,7 +79,7 @@ async function main(){
     await CHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
 
-    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, AI.Startup.pullRandom()))
+    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, Startup.pullRandom()))
 
     //API Related
 

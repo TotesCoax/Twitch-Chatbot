@@ -56,6 +56,6 @@ class Choice {
     }
 }
 
-module.exports = {
+export {
     ChooseYourOwnAdventure, Chapter, Choice
 }
