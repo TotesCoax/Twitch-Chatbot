@@ -54,7 +54,7 @@ async function main(){
     // let client_token_info = await getTokenInfo(clientToken.accessToken)
     // console.log(client_token_info.scopes)
 
-    // //API Connection
+    //API Connection
     const API = new ApiClient({authProvider:clientAuthProvider})
     console.log('Connected to API?')
     // const API_token = await API.getTokenInfo()
@@ -70,9 +70,6 @@ async function main(){
     const pubSubClient = new PubSubClient()
     const userId = await pubSubClient.registerUserListener(clientAuthProvider)
         .then(console.log('Connected to PubSub'))
-    pubSubClient.onRedemption(userId, (message) => {
-        console.log(message.rewardTitle);
-    })
 
     //Connection to chat
     const CHAT = new ChatClient({ authProvider:botAuthProvider, channels: [MY_CHANNEL], /*logger:{minLevel: 'debug'}*/ })
@@ -84,6 +81,9 @@ async function main(){
     //API Related
 
     //Pubsub Related
+    pubSubClient.onRedemption(userId, (message) => {
+        console.log(message.rewardTitle);
+    })
     
     //Chat Related
     let DisplayChat = new Chatbox()
