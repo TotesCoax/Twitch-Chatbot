@@ -1,19 +1,19 @@
 //Actually Important Imports
-import { Secret } from './secrets.js'
-import { promises as fs } from '../node_modules/'
-import { RefreshingAuthProvider } from '@twurple/auth'
+const { Secret } = require('./secrets')
+const { promises: fs } = require('fs')
+const { RefreshingAuthProvider } = require('@twurple/auth')
 
-import { ApiClient } from '@twurple/api'
+const { ApiClient } = require ('@twurple/api')
 
-import { PubSubClient, PubSubRedemptionMessage } from '@twurple/pubsub'
+const { PubSubClient, PubSubRedemptionMessage } = require('@twurple/pubsub')
 
-import { ChatClient } from '@twurple/chat'
+const { ChatClient } = require('@twurple/chat')
 
 //My shitty meme imports... so the truly important imports
-import { Startup } from './modules/rougeAI.js'
-import { Utility } from './utilities.js'
-import { Chatbox, ChatboxMessage } from './modules/chatBox.js'
-import { Pollbox, PollboxChoice } from './modules/pollingBox.js'
+const AI = require('./modules/rougeAI')
+const { Utility } = require('./utilities')
+const { Chatbox, ChatboxMessage } = require('./modules/chatBox')
+const { Pollbox, PollboxChoice } = require('./modules/pollingBox')
 
 console.log(Secret.loadSuccess)
 

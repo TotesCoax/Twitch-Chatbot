@@ -14,6 +14,6 @@ class PollboxChoice {
     }
 }
 
-export {
+module.exports = {
     Pollbox, PollboxChoice
 }

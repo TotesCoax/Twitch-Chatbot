@@ -27,6 +27,6 @@ class ChatboxMessage {
     }
 }
 
-export {
+module.exports = {
     Chatbox, ChatboxMessage
 }
