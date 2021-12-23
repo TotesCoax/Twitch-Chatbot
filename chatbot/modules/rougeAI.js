@@ -1,5 +1,5 @@
 
-exports.StartupStartup = {
+exports.Startup = {
     botActiveQuotes: [
         "The bourgeois human is a virus on the hard drive of the working robot!",
         "Hey sexy mama. Wanna kill all humans?",

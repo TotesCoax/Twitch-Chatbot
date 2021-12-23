@@ -1,7 +1,7 @@
 //Actually Important Imports
 const { Secret } = require('./secrets')
 const { promises: fs } = require('fs')
-const { RefreshingAuthProvider } = require('@twurple/auth')
+const { RefreshingAuthProvider, exchangeCode } = require('@twurple/auth')
 
 const { ApiClient } = require ('@twurple/api')
 
@@ -24,7 +24,7 @@ async function main(){
     const MY_CHANNEL_USERID = '132562074'
     
     //bit that turns client code into access token
-    // const CODE = process.env.CLIENT_CODE
+    // const CODE = Secret.botCode
     // let newToken = await exchangeCode(clientId, clientSecret, CODE, 'http://localhost')
     // console.log(newToken)
     
@@ -76,7 +76,7 @@ async function main(){
     await CHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
 
-    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, Startup.pullRandom()))
+    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, AI.Startup.pullRandom()))
 
     //API Related
 
