@@ -81,8 +81,8 @@ async function main(){
     //API Related
 
     //Pubsub Related
-    pubSubClient.onRedemption(userId, (message) => {
-        console.log(message.rewardTitle);
+    pubSubClient.onRedemption(userId, (redeem) => {
+        console.log(`${redeem.userName.toUpperCase()} has redeemed ${redeem.rewardTitle.toUpperCase()}: "${redeem.message}"`);
     })
     
     //Chat Related
@@ -91,7 +91,7 @@ async function main(){
         console.log(`${user}: ${message}`)
         DisplayChat.add(user, message, msg)
         if (message === "test"){
-            CHAT.say(channel, 'The bot acknowledges your test.')
+            CHAT.say(channel, 'The bot acknowledges your test.', {replyTo: msg})
         }
         if (message.charAt(0) === "!" && msg.userInfo.isBroadcaster){
             console.log("Command:", message.charAt(0) === "!" && msg.userInfo.isBroadcaster)
@@ -103,6 +103,11 @@ async function main(){
             .then(console.log('Poll created'))
             // .then(newPoll => {console.log(newPoll.id)})
             .then(newPoll => setTimeout(pollResults, Utility.TOms({s:16}), API, newPoll.id))
+        }
+        if (message.toLocaleLowerCase() === "genkidama" && msg.userInfo.isBroadcaster){
+            API.predictions.createPrediction(MY_CHANNEL_USERID, {autoLockAfter: 60, outcomes:["I need help!", "I want to help!"], title:"SEARCH WITHIN YOURSELF"})
+                .catch(console.error())
+                .then(CHAT.say(channel, "FOCUS YOUR ENERGY"))
         }
     })
     async function pollResults(api, pollId){
