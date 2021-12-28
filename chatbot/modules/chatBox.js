@@ -1,3 +1,4 @@
+//Need to invoke add() in main code, but will automatically remove message based on set delay, default of 5.
 class Chatbox {
     constructor(){
         this.show = true,

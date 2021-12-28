@@ -87,6 +87,7 @@ async function main(){
     
     //Chat Related
     let DisplayChat = new Chatbox()
+    //This is stuff that happens when a new message is put into chat.
     CHAT.onMessage((channel, user, message, msg) => {
         console.log(`${user}: ${message}`)
         DisplayChat.add(user, message, msg)
@@ -104,11 +105,16 @@ async function main(){
             // .then(newPoll => {console.log(newPoll.id)})
             .then(newPoll => setTimeout(pollResults, Utility.TOms({s:16}), API, newPoll.id))
         }
-        if (message.toLocaleLowerCase() === "genkidama" && msg.userInfo.isBroadcaster){
+        if (message.toLowerCase() === "genkidama" && msg.userInfo.isBroadcaster){
             API.predictions.createPrediction(MY_CHANNEL_USERID, {autoLockAfter: 60, outcomes:["I need help!", "I want to help!"], title:"SEARCH WITHIN YOURSELF"})
                 .catch(console.error())
                 .then(CHAT.say(channel, "FOCUS YOUR ENERGY"))
         }
+    })
+    //Listener for moderator actions to remove message from displayed chat
+    CHAT.onMessageRemove((channel, id, msg) =>{
+        DisplayChat.remove(msg)
+        console.log('Message was removed from DisplayChat in response to moderator action.')
     })
     async function pollResults(api, pollId){
         console.log('Getting poll data!')
