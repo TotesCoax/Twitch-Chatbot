@@ -55,7 +55,7 @@ async function main(){
     // console.log(client_token_info.scopes)
 
     //API Connection
-    const API = new ApiClient({authProvider:clientAuthProvider})
+    const activeAPI = new ApiClient({authProvider:clientAuthProvider})
     console.log('Connected to API?')
     // const API_token = await API.getTokenInfo()
     // console.log(API_token.scopes)
@@ -67,12 +67,12 @@ async function main(){
     console.table(pollHolder)
     
     //PubSub connection for channel points redemptions
-    const pubSubClient = new PubSubClient()
+    const activePubSubClient = new PubSubClient()
     const userId = await pubSubClient.registerUserListener(clientAuthProvider)
         .then(console.log('Connected to PubSub'))
 
     //Connection to chat
-    const CHAT = new ChatClient({ authProvider:botAuthProvider, channels: [MY_CHANNEL], /*logger:{minLevel: 'debug'}*/ })
+    const activeCHAT = new ChatClient({ authProvider:botAuthProvider, channels: [MY_CHANNEL], /*logger:{minLevel: 'debug'}*/ })
     await CHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
 
@@ -125,3 +125,5 @@ async function main(){
     }
 }
 main()
+
+export { activeAPI, activePubSubClient, activeCHAT }
