@@ -40,4 +40,4 @@ const Utility = {
     }
 }
 
-export { Utility }
+module.exports = { Utility }

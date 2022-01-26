@@ -24,9 +24,13 @@ async function main(){
     const MY_CHANNEL_USERID = '132562074'
     
     //bit that turns client code into access token
-    // const CODE = Secret.botCode
-    // let newToken = await exchangeCode(clientId, clientSecret, CODE, 'http://localhost')
+    // const botCODE = Secret.botCode
+    // let newToken = await exchangeCode(clientId, clientSecret, botCODE, 'http://localhost')
     // console.log(newToken)
+
+    // const clientCODE = Secret.clientCode
+    // let newClientToken = await exchangeCode(clientId, clientSecret, clientCODE, 'http://localhost')
+    // console.log(newClientToken)
     
     const tokenData = JSON.parse(await fs.readFile('./token.json'))
     const botAuthProvider = new RefreshingAuthProvider(
@@ -62,59 +66,56 @@ async function main(){
     // const rewards = await API.channelPoints.getCustomRewards(MY_CHANNEL_USERID)
     // rewards.forEach(reward => console.log(reward.title, reward.id))
     let pollHolder = []
-    const polls = await API.polls.getPolls(MY_CHANNEL_USERID)
+    const polls = await activeAPI.polls.getPolls(MY_CHANNEL_USERID)
     polls.data.forEach(poll => pollHolder.push(new Pollbox(poll)))
     console.table(pollHolder)
     
     //PubSub connection for channel points redemptions
     const activePubSubClient = new PubSubClient()
-    const userId = await pubSubClient.registerUserListener(clientAuthProvider)
+    const userId = await activePubSubClient.registerUserListener(clientAuthProvider)
         .then(console.log('Connected to PubSub'))
 
     //Connection to chat
     const activeCHAT = new ChatClient({ authProvider:botAuthProvider, channels: [MY_CHANNEL], /*logger:{minLevel: 'debug'}*/ })
-    await CHAT.connect().catch(console.error())
+    await activeCHAT.connect().catch(console.error())
         .then(console.log('Connected to chat'))
 
-    CHAT.onRegister(event => CHAT.say(MY_CHANNEL, AI.Startup.pullRandom()))
+    activeCHAT.onRegister(event => activeCHAT.say(MY_CHANNEL, AI.Startup.pullRandom()))
 
     //API Related
 
     //Pubsub Related
-    pubSubClient.onRedemption(userId, (redeem) => {
+    activePubSubClient.onRedemption(userId, (redeem) => {
         console.log(`${redeem.userName.toUpperCase()} has redeemed ${redeem.rewardTitle.toUpperCase()}: "${redeem.message}"`);
     })
     
     //Chat Related
-    let DisplayChat = new Chatbox()
     //This is stuff that happens when a new message is put into chat.
-    CHAT.onMessage((channel, user, message, msg) => {
+    activeCHAT.onMessage((channel, user, message, msg) => {
         console.log(`${user}: ${message}`)
-        DisplayChat.add(user, message, msg)
         if (message === "test"){
-            CHAT.say(channel, 'The bot acknowledges your test.', {replyTo: msg})
+            activeCHAT.say(channel, 'The bot acknowledges your test.', {replyTo: msg})
         }
         if (message.charAt(0) === "!" && msg.userInfo.isBroadcaster){
             console.log("Command:", message.charAt(0) === "!" && msg.userInfo.isBroadcaster)
-            CHAT.say(channel, "It will be done, my liege.")
+            activeCHAT.say(channel, "It will be done, my liege.")
         }
         if (message === "!polltest" && msg.userInfo.isBroadcaster){
-            API.polls.createPoll(MY_CHANNEL_USERID, {title:"Did this work?", choices:["yes","no"], duration: 15})
+            activeCHAT.polls.createPoll(MY_CHANNEL_USERID, {title:"Did this work?", choices:["yes","no"], duration: 15})
             .catch(console.error())
             .then(console.log('Poll created'))
             // .then(newPoll => {console.log(newPoll.id)})
-            .then(newPoll => setTimeout(pollResults, Utility.TOms({s:16}), API, newPoll.id))
+            .then(newPoll => setTimeout(pollResults, Utility.TOms({s:16}), activeCHAT, newPoll.id))
         }
         if (message.toLowerCase() === "genkidama" && msg.userInfo.isBroadcaster){
-            API.predictions.createPrediction(MY_CHANNEL_USERID, {autoLockAfter: 60, outcomes:["I need help!", "I want to help!"], title:"SEARCH WITHIN YOURSELF"})
+            activeCHAT.predictions.createPrediction(MY_CHANNEL_USERID, {autoLockAfter: 60, outcomes:["I need help!", "I want to help!"], title:"SEARCH WITHIN YOURSELF"})
                 .catch(console.error())
-                .then(CHAT.say(channel, "FOCUS YOUR ENERGY"))
+                .then(activeCHAT.say(channel, "FOCUS YOUR ENERGY"))
         }
     })
     //Listener for moderator actions to remove message from displayed chat
-    CHAT.onMessageRemove((channel, id, msg) =>{
-        DisplayChat.remove(msg)
-        console.log('Message was removed from DisplayChat in response to moderator action.')
+    activeCHAT.onMessageRemove((channel, id, msg) =>{
+        console.log('Message was removed in response to moderator action.')
     })
     async function pollResults(api, pollId){
         console.log('Getting poll data!')
@@ -126,4 +127,4 @@ async function main(){
 }
 main()
 
-export { activeAPI, activePubSubClient, activeCHAT }
+// export { activeAPI, activePubSubClient, activeCHAT }
