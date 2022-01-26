@@ -127,4 +127,3 @@ async function main(){
 }
 main()
 
-// export { activeAPI, activePubSubClient, activeCHAT }
